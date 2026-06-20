@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Pneumonia Detection</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white min-h-screen">
+
+<!-- Navbar -->
+<nav class="flex justify-between items-center px-8 py-5 max-w-6xl mx-auto">
+  <h1 class="text-2xl font-bold text-cyan-400 drop-shadow-[0_0_10px_rgba(34,211,238,0.7)]">
+    AI HealthScan
+  </h1>
+</nav>
+
+<!-- Hero Section -->
+<section class="text-center mt-12 px-4">
+  <h2 class="text-5xl font-extrabold mb-4 leading-tight 
+    bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent drop-shadow-lg">
+    Smart Pneumonia Detection
+  </h2>
+
+  <p class="text-gray-400 max-w-2xl mx-auto text-lg">
+    Upload a chest X-ray image and let our AI model instantly analyze and detect pneumonia.
+    Get accurate results with a professional downloadable report.
+  </p>
+</section>
+
+<!-- Form Section -->
+<div class="flex justify-center mt-14 px-4">
+  <div class="bg-slate-800/70 backdrop-blur-xl p-8 rounded-2xl 
+              shadow-[0_0_40px_rgba(0,255,255,0.15)] 
+              w-full max-w-md border border-slate-700 
+              hover:shadow-[0_0_60px_rgba(0,255,255,0.25)] transition duration-300">
+
+    <h3 class="text-xl font-semibold text-cyan-400 mb-6 text-center">
+      Patient Details
+    </h3>
+
+    <form action="/predict" method="post" enctype="multipart/form-data" class="space-y-5">
+
+      <input type="text" name="name" placeholder="Patient Name" required
+        class="w-full p-3 rounded-lg bg-slate-700 
+               focus:ring-2 focus:ring-cyan-400 outline-none
+               shadow-inner shadow-black/40">
+
+      <input type="number" name="age" placeholder="Age" required
+        class="w-full p-3 rounded-lg bg-slate-700 
+               focus:ring-2 focus:ring-cyan-400 outline-none
+               shadow-inner shadow-black/40">
+
+      <input type="file" name="image" required
+        class="w-full p-2 bg-slate-700 rounded-lg text-sm
+               shadow-inner shadow-black/40">
+
+      <button type="submit"
+        class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 
+               hover:scale-105 hover:shadow-[0_0_25px_rgba(34,211,238,0.6)]
+               transition transform p-3 rounded-lg font-semibold shadow-lg">
+        Analyze X-ray
+      </button>
+
+    </form>
+  </div>
+</div>
+
+<!-- Features Section -->
+<section class="mt-24 max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+
+  <div class="bg-slate-800 p-6 rounded-xl 
+              shadow-[0_0_25px_rgba(0,255,255,0.1)] 
+              hover:scale-105 hover:shadow-[0_0_40px_rgba(0,255,255,0.3)]
+              transition duration-300">
+    <h3 class="text-lg font-semibold mb-2">⚡ Instant Analysis</h3>
+    <p class="text-gray-400 text-sm">
+      Get results within seconds using AI-powered detection.
+    </p>
+  </div>
+
+  <div class="bg-slate-800 p-6 rounded-xl 
+              shadow-[0_0_25px_rgba(0,255,255,0.1)] 
+              hover:scale-105 hover:shadow-[0_0_40px_rgba(0,255,255,0.3)]
+              transition duration-300">
+    <h3 class="text-lg font-semibold mb-2">📄 Smart Reports</h3>
+    <p class="text-gray-400 text-sm">
+      Download professional medical reports instantly.
+    </p>
+  </div>
+
+  <div class="bg-slate-800 p-6 rounded-xl 
+              shadow-[0_0_25px_rgba(0,255,255,0.1)] 
+              hover:scale-105 hover:shadow-[0_0_40px_rgba(0,255,255,0.3)]
+              transition duration-300">
+    <h3 class="text-lg font-semibold mb-2">🤖 AI Technology</h3>
+    <p class="text-gray-400 text-sm">
+      Deep learning model trained on real X-ray datasets.
+    </p>
+  </div>
+
+</section>
+
+<!-- Footer -->
+<footer class="text-center text-gray-500 text-sm mt-24 pb-6">
+  © 2026 AI HealthScan • Built for Academic Project
+</footer>
+
+</body>
+</html>

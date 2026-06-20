@@ -1,0 +1,168 @@
+
+<!-- result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-900 text-white flex items-center justify-center min-h-screen">
+
+<div class="bg-slate-800 p-8 rounded-2xl shadow-2xl w-full max-w-lg text-center">
+  
+  <h1 class="text-3xl font-bold text-cyan-400 mb-4">Diagnosis Result</h1>
+
+  <img src="{{ image }}" class="mx-auto rounded-lg mb-4 w-64 h-64 object-cover">
+
+  <p class="text-xl font-semibold mb-2">{{ result }}</p>
+  <p class="text-gray-300 mb-4">Confidence: {{ confidence }}%</p>
+
+  <div class="bg-slate-700 p-4 rounded-lg mb-4 text-left space-y-1">
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Age:</strong> {{ age }}</p>
+    <p><strong>Status:</strong> Completed</p>
+  </div>
+
+  <div class="text-left text-sm text-gray-400 mb-4">
+    <p><strong>Medical Note:</strong></p>
+    <p>
+      This AI system analyzes chest X-rays to detect pneumonia patterns. 
+      The result is generated using a trained deep learning model and should 
+      be used for preliminary screening only.
+    </p>
+  </div>
+
+  <form action="/download_report" method="post" class="mb-3">
+    <input type="hidden" name="name" value="{{ name }}">
+    <input type="hidden" name="age" value="{{ age }}">
+    <input type="hidden" name="result" value="{{ result }}">
+    <input type="hidden" name="confidence" value="{{ confidence }}">
+
+    <button type="submit"
+      class="w-full bg-green-500 hover:bg-green-600 transition p-3 rounded-lg font-semibold">
+      Download Report
+    </button>
+  </form>
+
+  <a href="/"
+    class="block w-full bg-gray-600 hover:bg-gray-700 transition p-3 rounded-lg font-semibold">
+    Back to Home
+  </a>
+
+</div>
+<!-- NEXT LEVEL AI CHATBOT -->
+<div class="fixed bottom-5 right-5 z-50">
+
+  <!-- Toggle Button -->
+  <button onclick="toggleChat()" class="bg-cyan-500 p-4 rounded-full shadow-lg animate-pulse hover:scale-110 transition">
+    🤖
+  </button>
+
+  <!-- Chat Window -->
+  <div id="chat-window" class="hidden mt-3 w-80 bg-slate-900 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col">
+    
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-cyan-500 to-blue-500 p-3 font-semibold text-black flex justify-between">
+      AI Doctor
+      <span onclick="toggleChat()" class="cursor-pointer">✖</span>
+    </div>
+
+    <!-- Messages -->
+    <div id="chat-box" class="h-72 overflow-y-auto p-3 text-sm space-y-3"></div>
+
+    <!-- Suggestions -->
+    <div class="flex flex-wrap gap-2 p-2 border-t border-slate-700">
+      <button onclick="quickMsg('What is pneumonia?')" class="text-xs bg-slate-700 px-2 py-1 rounded">Pneumonia?</button>
+      <button onclick="quickMsg('Symptoms')" class="text-xs bg-slate-700 px-2 py-1 rounded">Symptoms</button>
+      <button onclick="quickMsg('Precautions')" class="text-xs bg-slate-700 px-2 py-1 rounded">Precautions</button>
+    </div>
+
+    <!-- Input -->
+    <div class="flex border-t border-slate-700">
+      <input id="user-input" type="text" placeholder="Ask AI doctor..."
+        class="flex-1 p-3 bg-slate-800 outline-none text-white text-sm">
+      <button onclick="sendMessage()" class="bg-cyan-500 px-4 text-black">➤</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleChat() {
+  document.getElementById("chat-window").classList.toggle("hidden");
+}
+
+function createBubble(text, isUser=false) {
+  let div = document.createElement("div");
+  div.className = isUser
+    ? "text-right"
+    : "text-left";
+
+  let bubble = document.createElement("span");
+  bubble.className = isUser
+    ? "inline-block bg-cyan-500 text-black px-3 py-2 rounded-xl"
+    : "inline-block bg-slate-700 text-white px-3 py-2 rounded-xl";
+
+  bubble.innerText = text;
+  div.appendChild(bubble);
+  return div;
+}
+
+function typeEffect(text) {
+  let chatBox = document.getElementById("chat-box");
+  let bubble = createBubble("", false);
+  chatBox.appendChild(bubble);
+
+  let span = bubble.querySelector("span");
+  let i = 0;
+
+  function typing() {
+    if (i < text.length) {
+      span.innerText += text.charAt(i);
+      i++;
+      setTimeout(typing, 15);
+    }
+  }
+
+  typing();
+}
+
+function quickMsg(msg) {
+  document.getElementById("user-input").value = msg;
+  sendMessage();
+}
+
+function sendMessage() {
+  let input = document.getElementById("user-input");
+  let message = input.value.trim();
+  if (!message) return;
+
+  let chatBox = document.getElementById("chat-box");
+
+  chatBox.appendChild(createBubble(message, true));
+
+  let typing = createBubble("Typing...", false);
+  typing.querySelector("span").style.opacity = "0.6";
+  chatBox.appendChild(typing);
+
+  fetch("/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: message})
+  })
+  .then(res => res.json())
+  .then(data => {
+    typing.remove();
+    typeEffect(data.reply);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  });
+
+  input.value = "";
+}
+</script>
+
+</body>
+</html>

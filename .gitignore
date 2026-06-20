@@ -1,0 +1,16 @@
+# Python environments and generated files
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Local data and generated application output
+dataset/
+static/uploads/
+reports/
+*.log
+
+# Editor and operating-system files
+.vscode/
+.DS_Store
+Thumbs.db
